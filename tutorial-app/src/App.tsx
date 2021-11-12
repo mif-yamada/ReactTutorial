@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+import './App.css';
+import { Board } from './component/Board';
+import { mapState } from './utils/gameState';
+
+const App: React.FC = () => {
+  const [turnNum, setTurnNum] = useState<number>(0);
+  const [clickMapIdx, setClickMapIdx] = useState<number[]>([]);
+  const [markList, setMarkList] = useState<string[][]>([]);
+
+  const nowPlayer = turnNum % 2 === 0 ? 'X' : 'O';
+
+  const handleClick = () => {
+    setTurnNum(turnNum + 1);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Board playerMarkList={markList} setMark={handleClick} />
     </div>
   );
-}
+};
 
 export default App;
