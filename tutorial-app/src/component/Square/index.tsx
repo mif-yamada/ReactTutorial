@@ -2,8 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 interface SquareProps {
+  squareIdx: number;
   playerMark: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const StyledSquare = styled.button`
@@ -25,8 +26,10 @@ const StyledSquare = styled.button`
 `;
 
 const Square: React.FC<SquareProps> = (props: SquareProps) => {
-  const { playerMark, onClick } = props;
-  return <StyledSquare onClick={onClick}>{playerMark}</StyledSquare>;
+  const { squareIdx, playerMark, onClick } = props;
+  return (
+    <StyledSquare data-idx={squareIdx} onClick={onClick}>{playerMark}</StyledSquare>
+  );
 };
 
 export { Square };

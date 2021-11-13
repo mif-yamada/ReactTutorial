@@ -5,8 +5,7 @@ import { Square } from '../Square';
 
 interface BoardProps {
   playerMarkList: string[][];
-  playerMark: string;
-  setMark: () => void;
+  setMark: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const StyledBoard = styled.table`
@@ -15,7 +14,7 @@ const StyledBoard = styled.table`
 `;
 
 const Board: React.FC<BoardProps> = (props: BoardProps) => {
-  const { playerMarkList, playerMark, setMark } = props;
+  const { playerMarkList, setMark } = props;
   return (
     <StyledBoard>
       <tbody>
@@ -25,7 +24,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
               {rowMarkList.map((mark, i) => {
                 return (
                   <td key={`id=${i}`}>
-                    <Square playerMark={playerMark} onClick={setMark}></Square>
+                    <Square squareIdx={idx*3 + i} playerMark={playerMarkList[idx][i]} onClick={setMark}></Square>
                   </td>
                 );
               })}
