@@ -10,7 +10,9 @@ interface BoardProps {
 
 const StyledBoard = styled.table`
   clear: both;
-  content: '';
+  display: flex;
+  justify-content: center;
+  margin:10px;
 `;
 
 const Board: React.FC<BoardProps> = (props: BoardProps) => {

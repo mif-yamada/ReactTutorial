@@ -11,15 +11,15 @@ const StyledSquare = styled.button`
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
+  height: 40px;
+  width: 40px;
+  margin-right: -5px;
+  margin-top: -5px;
   padding: 0;
   text-align: center;
-  width: 34px;
   &:focus {
     outline: none;
   }
