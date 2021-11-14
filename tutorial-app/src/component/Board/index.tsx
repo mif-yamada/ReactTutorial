@@ -24,7 +24,11 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
               {rowMarkList.map((mark, i) => {
                 return (
                   <td key={`id=${i}`}>
-                    <Square squareIdx={idx*3 + i} playerMark={playerMarkList[idx][i]} onClick={setMark}></Square>
+                    <Square
+                      squareIdx={idx * 3 + i }
+                      playerMark={playerMarkList[idx][i]}
+                      onClick={setMark}
+                    ></Square>
                   </td>
                 );
               })}

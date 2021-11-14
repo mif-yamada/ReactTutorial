@@ -2,49 +2,56 @@ import React, { useState, useEffect } from 'react';
 
 import './App.css';
 import { Board } from './component/Board';
+import { judgementWinner } from './utils/gameState';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
-  const [clickIdx, setClickIdx] = useState<number>(0);
   const [markList, setMarkList] = useState<string[][]>([]);
-  const [nowPlayer, setNowPlayer] = useState<string>('');
+  const [nowPlayer, setNextPlayer] = useState<string>('');
+  const [winner, setWinner] = useState<string>('');
 
   useEffect(() => {
-    setMarkList(
-      Array(3)
-        .fill(null)
-        .map(() => Array(3).fill(null))
-    );
+    const initTurn = 1;
+    const initMap = Array(3)
+      .fill('')
+      .map(() => Array(3).fill(''));
+    console.log(initMap);
+    setTurnNum(initTurn);
+    setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
+    setMarkList(initMap);
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    setNowPlayer(turnNum % 2 === 0 ? 'X' : 'O');
-    setClickIdx(Number(e.currentTarget.getAttribute('data-idx')));
-    setMarkList(
-      markList.map((row, rowidx) => {
-        const updateRow = row.map((mark, idx) => {
-          if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
-            if (markList[rowidx][idx] === null) {
-              return nowPlayer;
+    if (winner === '') {
+      const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
+      const checkMapBlank = () => {
+        return markList.map((row, rowidx) =>
+          row.map((mark, idx) => {
+            if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
+              if (markList[rowidx][idx] === '') {
+                const nextTurn = turnNum + 1;
+                setTurnNum(nextTurn);
+                setNextPlayer(nextTurn % 2 !== 0 ? 'X' : 'O');
+                return nowPlayer;
+              } else {
+                return mark;
+              }
             }
-          }
-          return mark;
-        });
-        return updateRow;
-      })
-    );
-    setTurnNum(turnNum + 1);
+            return mark;
+          })
+        );
+      };
+      const currentMap = checkMapBlank();
+      setMarkList(currentMap);
+      const winnerMark = judgementWinner(currentMap);
+      setWinner(winnerMark);
+    }
   };
 
-  console.log(markList);
-  console.log(nowPlayer);
-  console.log(clickIdx);
   return (
     <div className='App'>
-      <Board
-        playerMarkList={markList}
-        setMark={handleClick}
-      />
+      <div>Winner:{winner}</div>
+      <Board playerMarkList={markList} setMark={handleClick} />
     </div>
   );
 };
