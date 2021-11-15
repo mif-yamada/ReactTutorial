@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
-import { currentGameState } from './redux/action';
+import { createGameStateAction } from './redux/action';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     setHistoryList([]);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (winner === '') {
       const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
       const checkMapBlank = () => {
@@ -84,7 +84,7 @@ const App: React.FC = () => {
       const winnerMark = judgementWinner(currentMap);
       setWinner(winnerMark);
     }
-  };
+  },[]);
 
   // TODO:ゲーム履歴機能
   const history = () => {
@@ -94,7 +94,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     history();
-  }, [turnNum]);
+  }, [turnNum, handleClick]);
 
   return (
     <StyledBody>
