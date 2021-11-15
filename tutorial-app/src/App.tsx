@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
+import { currentGameState } from './redux/action';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
