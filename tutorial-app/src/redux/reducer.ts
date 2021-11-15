@@ -1,5 +1,5 @@
 // reducer...Actionから、新たなStateに書き換える
-import { ActionType,  } from './types';
+import { ActionType } from './types';
 
 const initState: ActionType = {
   type: 'CURRENT_GAMESTATE',
@@ -12,7 +12,7 @@ const initState: ActionType = {
 };
 
 // TODO:state actionの型付け
-export const gameReducer = (state=initState, action: ActionType):ActionType => {
+export const gameReducer = (state=initState,action: ActionType):ActionType => {
   switch (action.type) {
     case 'CURRENT_GAMESTATE':
       return {

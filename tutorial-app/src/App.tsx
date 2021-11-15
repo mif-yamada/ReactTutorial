@@ -4,7 +4,9 @@ import styled from '@emotion/styled';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
 import { createGameStateAction } from './redux/action';
-import { currentGameState, Actions, ActionType } from './redux/types';
+import { ActionType } from './redux/types';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store } from './redux/store';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
@@ -45,7 +47,15 @@ const App: React.FC = () => {
   `;
 
   useEffect(() => {
-    initGame();
+    const saveMap = store.getState();
+    console.log(saveMap);
+    const initTurn = saveMap.payload.turnNum;
+    const initMap = saveMap.payload.currentMap;
+    setTurnNum(initTurn);
+    setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
+    setMarkList(initMap);
+    setWinner('');
+    setHistoryList([]);
   }, []);
 
   const initGame = () => {
@@ -91,7 +101,9 @@ const App: React.FC = () => {
           currentMap: currentMap,
         },
       };
-      createGameStateAction(actionState);
+      store.dispatch(createGameStateAction(actionState));
+          const saveMap = store.getState();
+          console.log(saveMap);
     }
   };
 
