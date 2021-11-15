@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
 import { createGameStateAction } from './redux/action';
+import { currentGameState, Actions, ActionType } from './redux/types';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
@@ -59,7 +60,7 @@ const App: React.FC = () => {
     setHistoryList([]);
   };
 
-  const handleClick = useCallback((e: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (winner === '') {
       const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
       const checkMapBlank = () => {
@@ -83,8 +84,16 @@ const App: React.FC = () => {
       setMarkList(currentMap);
       const winnerMark = judgementWinner(currentMap);
       setWinner(winnerMark);
+      const actionState: ActionType = {
+        type: 'CURRENT_GAMESTATE',
+        payload: {
+          turnNum: turnNum + 1,
+          currentMap: currentMap,
+        },
+      };
+      createGameStateAction(actionState);
     }
-  },[]);
+  };
 
   // TODO:ゲーム履歴機能
   const history = () => {
@@ -94,7 +103,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     history();
-  }, [turnNum, handleClick]);
+  }, [turnNum]);
 
   return (
     <StyledBody>
