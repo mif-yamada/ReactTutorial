@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
-import './App.css';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
 
@@ -10,6 +9,11 @@ const App: React.FC = () => {
   const [markList, setMarkList] = useState<string[][]>([]);
   const [nowPlayer, setNextPlayer] = useState<string>('');
   const [winner, setWinner] = useState<string>('');
+  const [historyList, setHistoryList] = useState<string[][][]>([]);
+
+  const StyledBody = styled.div`
+    text-align: center;
+  `;
 
   const StyledResetButton = styled.button`
     display: inline-block;
@@ -35,6 +39,7 @@ const App: React.FC = () => {
     font-weight: bold;
     color: #db2e6d;
     margin: 10px;
+    text-align: center;
   `;
 
   useEffect(() => {
@@ -50,6 +55,7 @@ const App: React.FC = () => {
     setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
     setMarkList(initMap);
     setWinner('');
+    setHistoryList([]);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -79,12 +85,22 @@ const App: React.FC = () => {
     }
   };
 
+  // TODO:ゲーム履歴機能
+  const history = () => {
+    const newHistoryList = historyList.concat(markList);
+    setHistoryList(newHistoryList);
+  };
+
+  useEffect(() => {
+    history();
+  }, [turnNum]);
+
   return (
-    <div className='App'>
+    <StyledBody>
       <StyledWinner>Winner:{winner}</StyledWinner>
       <StyledResetButton onClick={initGame}>Reset</StyledResetButton>
       <Board playerMarkList={markList} setMark={handleClick} />
-    </div>
+    </StyledBody>
   );
 };
 

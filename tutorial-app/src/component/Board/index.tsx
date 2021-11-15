@@ -12,7 +12,7 @@ const StyledBoard = styled.table`
   clear: both;
   display: flex;
   justify-content: center;
-  margin:10px;
+  margin: 10px;
 `;
 
 const Board: React.FC<BoardProps> = (props: BoardProps) => {
@@ -27,7 +27,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
                 return (
                   <td key={`id=${i}`}>
                     <Square
-                      squareIdx={idx * 3 + i }
+                      squareIdx={idx * 3 + i}
                       playerMark={playerMarkList[idx][i]}
                       onClick={setMark}
                     ></Square>

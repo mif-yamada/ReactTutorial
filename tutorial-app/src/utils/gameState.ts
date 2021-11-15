@@ -1,16 +1,22 @@
-export const judgementWinner = (currentMap: string[][]):string => {
+export const judgementWinner = (currentMap: string[][]): string => {
   const colList = currentMap.map((row, rowIdx) =>
     row.map((mark, idx) => {
       return currentMap[idx][rowIdx];
     })
   );
-  const crossList: string[][] = Array(2).fill([]).map((row: string[], rowIdx) => {
-    if (rowIdx === 0) {
-      return Array(3).fill('').map((val, idx) => currentMap[idx][idx]);
-    } else {
-      return Array(3).fill('').map((val, idx) => currentMap[2 - idx][idx]);
-    }
-  });
+  const crossList: string[][] = Array(2)
+    .fill([])
+    .map((row: string[], rowIdx) => {
+      if (rowIdx === 0) {
+        return Array(3)
+          .fill('')
+          .map((val, idx) => currentMap[idx][idx]);
+      } else {
+        return Array(3)
+          .fill('')
+          .map((val, idx) => currentMap[2 - idx][idx]);
+      }
+    });
   const allList = currentMap.concat(colList, crossList);
   const winnerList = allList.filter(
     (array) =>
@@ -23,4 +29,3 @@ export const judgementWinner = (currentMap: string[][]):string => {
     return '';
   }
 };
-// TODO:ヒストリー表示？
