@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import shortid from 'shortid';
 
 import { Square } from '../Square';
 
@@ -20,12 +21,12 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
   return (
     <StyledBoard>
       <tbody>
-        {playerMarkList.map((rowMarkList, idx) => {
+        {playerMarkList.map((rowMarkList, idx) =>{
           return (
-            <tr key={`id=${idx}`}>
+            <tr key={`id=${shortid.generate()}`}>
               {rowMarkList.map((mark, i) => {
                 return (
-                  <td key={`id=${i}`}>
+                  <td key={`id=${shortid.generate()}`}>
                     <Square
                       squareIdx={idx * 3 + i}
                       playerMark={playerMarkList[idx][i]}

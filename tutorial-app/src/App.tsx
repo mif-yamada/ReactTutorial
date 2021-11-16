@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
-import { createGameStateAction } from './redux/action';
-import { ActionType } from './redux/types';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store } from './redux/store';
 
 const App: React.FC = () => {
   const [turnNum, setTurnNum] = useState<number>(0);
   const [markList, setMarkList] = useState<string[][]>([]);
   const [nowPlayer, setNextPlayer] = useState<string>('');
   const [winner, setWinner] = useState<string>('');
-  const [historyList, setHistoryList] = useState<string[][][]>([]);
 
   const StyledBody = styled.div`
     text-align: center;
@@ -47,15 +42,7 @@ const App: React.FC = () => {
   `;
 
   useEffect(() => {
-    const saveMap = store.getState();
-    console.log(saveMap);
-    const initTurn = saveMap.payload.turnNum;
-    const initMap = saveMap.payload.currentMap;
-    setTurnNum(initTurn);
-    setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
-    setMarkList(initMap);
-    setWinner('');
-    setHistoryList([]);
+    initGame();
   }, []);
 
   const initGame = () => {
@@ -67,11 +54,10 @@ const App: React.FC = () => {
     setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
     setMarkList(initMap);
     setWinner('');
-    setHistoryList([]);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    if (winner === '') {
+    if (winner === '' && turnNum < 10) {
       const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
       const checkMapBlank = () => {
         return markList.map((row, rowidx) =>
@@ -94,28 +80,8 @@ const App: React.FC = () => {
       setMarkList(currentMap);
       const winnerMark = judgementWinner(currentMap);
       setWinner(winnerMark);
-      const actionState: ActionType = {
-        type: 'CURRENT_GAMESTATE',
-        payload: {
-          turnNum: turnNum + 1,
-          currentMap: currentMap,
-        },
-      };
-      store.dispatch(createGameStateAction(actionState));
-          const saveMap = store.getState();
-          console.log(saveMap);
     }
   };
-
-  // TODO:ゲーム履歴機能
-  const history = () => {
-    const newHistoryList = historyList.concat(markList);
-    setHistoryList(newHistoryList);
-  };
-
-  useEffect(() => {
-    history();
-  }, [turnNum]);
 
   return (
     <StyledBody>

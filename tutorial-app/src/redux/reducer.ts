@@ -12,7 +12,7 @@ const initState: ActionType = {
 };
 
 // TODO:state actionの型付け
-export const gameReducer = (state=initState,action: ActionType):ActionType => {
+export const gameReducer = (state = initState, action: ActionType): ActionType => {
   switch (action.type) {
     case 'CURRENT_GAMESTATE':
       return {

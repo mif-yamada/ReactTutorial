@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import { gameReducer } from './reducer';
-import { persistStore, persistCombineReducers } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
 const persistConfig = {
@@ -8,9 +8,7 @@ const persistConfig = {
   storage,
 };
 
-const reducer = persistCombineReducers(persistConfig, gameReducer);
+// const store = createStore(gameReducer);
+const persistedReducer = persistReducer(persistConfig, gameReducer);
 
-
-// export const store = createStore(reducer);
-// export const persistor = persistStore(store);
-export const store = createStore(gameReducer);
+export const store = createStore(persistedReducer);
