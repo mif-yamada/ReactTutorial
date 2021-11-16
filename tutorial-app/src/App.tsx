@@ -8,6 +8,7 @@ import { createGameStateAction } from './redux/action';
 import { store } from './redux/store';
 
 const App: React.FC = () => {
+  console.log('よばれますか');
   const currentData = store.getState();
   const turnNum =currentData.payload.turnNum;
   const markList = currentData.payload.markList;
