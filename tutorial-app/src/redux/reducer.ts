@@ -1,31 +1,33 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
-import { GameState } from './types';
+import { ActionType } from './types';
 
-const initState = {
-  turnNum: 1,
-  markList: Array(3)
-    .fill('')
-    .map(() => Array(3).fill('')),
-  nowPlayer: '',
-  winner: '',
-} as GameState;
-
-export const gameReducers = createSlice({
-  name: 'game',
-  initialState:initState,
-  reducers: {
-    CURRENT_GAMESTATE: (state, action:PayloadAction<GameState>) => {
-      state.turnNum = action.payload.turnNum;
-      state.markList = action.payload.markList;
-      state.nowPlayer = action.payload.nowPlayer;
-      state.winner = action.payload.winner;
-    },
+const initState: ActionType = {
+  type: 'CURRENT_GAMESTATE',
+  payload: {
+    turnNum: 1,
+    markList: Array(3)
+      .fill('')
+      .map(() => Array(3).fill('')),
+    nowPlayer: 'X',
+    winner: '',
   },
-});
+};
 
-export const { CURRENT_GAMESTATE } = gameReducers.actions;
-
-export const selectGameState = (state: RootState) => state.game;
-
-export const gameReducer = gameReducers.reducer;
+export const gameReducer = (
+  state = initState,
+  action: ActionType
+): ActionType => {
+  switch (action.type) {
+    case 'CURRENT_GAMESTATE':
+      return {
+        type: 'CURRENT_GAMESTATE',
+        payload: {
+          turnNum: action.payload.turnNum,
+          markList: action.payload.markList,
+          nowPlayer: action.payload.nowPlayer,
+          winner: action.payload.winner,
+        },
+      };
+    default:
+      return state;
+  }
+};

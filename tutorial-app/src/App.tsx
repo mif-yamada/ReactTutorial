@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from './redux/hooks';
 import styled from '@emotion/styled';
 
-import { CURRENT_GAMESTATE } from './redux/reducer';
 import { GameState } from './redux/types';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
+import { createGameStateAction } from './redux/action';
+import { store } from './redux/store';
 
 const App: React.FC = () => {
-  const turnNum = useAppSelector((state) => state.game.turnNum);
-  const markList = useAppSelector((state) => state.game.markList);
-  const nowPlayer = useAppSelector((state) => state.game.nowPlayer);
-  const winner = useAppSelector((state) => state.game.winner);
-
-  const dispatch = useAppDispatch();
-
+  const currentData = store.getState();
+  const turnNum =currentData.payload.turnNum;
+  const markList = currentData.payload.markList;
+  const nowPlayer = currentData.payload.nowPlayer;
+  const winner = currentData.payload.winner;
   const StyledBody = styled.div`
     text-align: center;
   `;
@@ -47,6 +45,7 @@ const App: React.FC = () => {
   `;
 
   useEffect(() => {
+    console.log('syokika');
     initGame();
   }, []);
 
@@ -59,7 +58,8 @@ const App: React.FC = () => {
       nowPlayer: 'X',
       winner: '',
     };
-    dispatch(CURRENT_GAMESTATE(initGameState));
+    const initAction=createGameStateAction(initGameState);
+    store.dispatch(initAction);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -78,7 +78,7 @@ const App: React.FC = () => {
               if (markList[rowidx][idx] === '') {
                 const nextTurn = turnNum + 1;
                 currentGameState.turnNum=nextTurn;
-                currentGameState.nowPlayer=(nextTurn % 2 !== 0 ? 'X' : 'O');
+                currentGameState.nowPlayer = (nextTurn % 2 !== 0 ? 'X' : 'O');
                 return nowPlayer;
               } else {
                 return mark;
@@ -92,15 +92,15 @@ const App: React.FC = () => {
       currentGameState.markList = currentMap;
       const winnerMark = judgementWinner(currentMap);
       currentGameState.winner = winnerMark;
-      dispatch(CURRENT_GAMESTATE(currentGameState));
+      const currentAction = createGameStateAction(currentGameState);
+      store.dispatch(currentAction);
     }
   };
-
   return (
     <StyledBody>
       <StyledWinner>Winner:{winner}</StyledWinner>
       <StyledResetButton onClick={initGame}>Reset</StyledResetButton>
-      <Board playerMarkList={markList} setMark={handleClick} />
+      <Board playerMarkList={markList} setMark={handleClick}/>
     </StyledBody>
   );
 };

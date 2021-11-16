@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {createStore } from 'redux';
 import { gameReducer } from './reducer';
 
 // const persistConfig = {
@@ -6,14 +6,5 @@ import { gameReducer } from './reducer';
 //   storage,
 // };
 
-// const store = createStore(gameReducer);
+export const store = createStore(gameReducer);
 // const persistedReducer = persistReducer(persistConfig, gameReducer);
-
-export const store = configureStore({
-  reducer: {
-    game: gameReducer,
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch= typeof store.dispatch

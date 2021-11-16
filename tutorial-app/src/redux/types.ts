@@ -1,6 +1,9 @@
 import { Action } from 'redux';
 
-export type Actions ='CURRENT_GAMESTATE';
+export const CURRENT_GAMESTATE = 'CURRENT_GAMESTATE';
+
+// 複数Actionある時はUnion型？
+export type Actions = 'CURRENT_GAMESTATE';
 export interface currentGameState extends Action {
   type: 'CURRENT_GAMESTATE';
 }
@@ -13,6 +16,6 @@ export interface GameState {
 }
 
 export interface ActionType {
-  payload: GameState;
   type: Actions;
+  payload: GameState;
 }
