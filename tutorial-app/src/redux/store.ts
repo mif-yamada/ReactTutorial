@@ -1,14 +1,19 @@
-import { createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { gameReducer } from './reducer';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/es/storage';
 
-const persistConfig = {
-  key: 'root',
-  storage,
-};
+// const persistConfig = {
+//   key: 'root',
+//   storage,
+// };
 
 // const store = createStore(gameReducer);
-const persistedReducer = persistReducer(persistConfig, gameReducer);
+// const persistedReducer = persistReducer(persistConfig, gameReducer);
 
-export const store = createStore(persistedReducer);
+export const store = configureStore({
+  reducer: {
+    game: gameReducer,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch= typeof store.dispatch

@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from './redux/hooks';
 import styled from '@emotion/styled';
 
+import { CURRENT_GAMESTATE } from './redux/reducer';
+import { GameState } from './redux/types';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
 
 const App: React.FC = () => {
-  const [turnNum, setTurnNum] = useState<number>(0);
-  const [markList, setMarkList] = useState<string[][]>([]);
-  const [nowPlayer, setNextPlayer] = useState<string>('');
-  const [winner, setWinner] = useState<string>('');
+  const turnNum = useAppSelector((state) => state.game.turnNum);
+  const markList = useAppSelector((state) => state.game.markList);
+  const nowPlayer = useAppSelector((state) => state.game.nowPlayer);
+  const winner = useAppSelector((state) => state.game.winner);
+
+  const dispatch = useAppDispatch();
 
   const StyledBody = styled.div`
     text-align: center;
@@ -46,27 +51,34 @@ const App: React.FC = () => {
   }, []);
 
   const initGame = () => {
-    const initTurn = 1;
-    const initMap = Array(3)
-      .fill('')
-      .map(() => Array(3).fill(''));
-    setTurnNum(initTurn);
-    setNextPlayer(initTurn % 2 !== 0 ? 'X' : 'O');
-    setMarkList(initMap);
-    setWinner('');
+    const initGameState: GameState = {
+      turnNum: 1,
+      markList: Array(3)
+        .fill('')
+        .map(() => Array(3).fill('')),
+      nowPlayer: 'X',
+      winner: '',
+    };
+    dispatch(CURRENT_GAMESTATE(initGameState));
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (winner === '' && turnNum < 10) {
       const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
+      const currentGameState: GameState = {
+        turnNum: turnNum,
+        markList: markList,
+        nowPlayer: nowPlayer,
+        winner: winner,
+      };
       const checkMapBlank = () => {
         return markList.map((row, rowidx) =>
           row.map((mark, idx) => {
             if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
               if (markList[rowidx][idx] === '') {
                 const nextTurn = turnNum + 1;
-                setTurnNum(nextTurn);
-                setNextPlayer(nextTurn % 2 !== 0 ? 'X' : 'O');
+                currentGameState.turnNum=nextTurn;
+                currentGameState.nowPlayer=(nextTurn % 2 !== 0 ? 'X' : 'O');
                 return nowPlayer;
               } else {
                 return mark;
@@ -77,9 +89,10 @@ const App: React.FC = () => {
         );
       };
       const currentMap = checkMapBlank();
-      setMarkList(currentMap);
+      currentGameState.markList = currentMap;
       const winnerMark = judgementWinner(currentMap);
-      setWinner(winnerMark);
+      currentGameState.winner = winnerMark;
+      dispatch(CURRENT_GAMESTATE(currentGameState));
     }
   };
 

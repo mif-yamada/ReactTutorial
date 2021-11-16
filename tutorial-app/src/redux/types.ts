@@ -1,18 +1,18 @@
 import { Action } from 'redux';
 
-export const CURRENT_GAMESTATE = 'CURRENT_GAMESTATE';
-
 export type Actions ='CURRENT_GAMESTATE';
 export interface currentGameState extends Action {
   type: 'CURRENT_GAMESTATE';
 }
 
-export interface Payload {
+export interface GameState {
   turnNum: number;
-  currentMap: string[][];
+  markList: string[][];
+  nowPlayer: string;
+  winner: string;
 }
 
 export interface ActionType {
+  payload: GameState;
   type: Actions;
-  payload: Payload;
 }

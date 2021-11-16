@@ -6,7 +6,9 @@ export const createGameStateAction = (state:ActionType):ActionType => {
     type: state.type,
     payload: {
       turnNum:state.payload.turnNum,
-      currentMap:state.payload.currentMap,
+      markList: state.payload.markList,
+      nowPlayer: state.payload.nowPlayer,
+      winner:state.payload.winner
     },
   };
 };
