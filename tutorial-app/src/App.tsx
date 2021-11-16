@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { GameState } from './redux/types';
@@ -8,9 +8,11 @@ import { createGameStateAction } from './redux/action';
 import { store } from './redux/store';
 
 const App: React.FC = () => {
-  console.log('よばれますか');
+  // レンダリング用データ
+  const [update, setUpdata] = useState<boolean>(false);
+
   const currentData = store.getState();
-  const turnNum =currentData.payload.turnNum;
+  const turnNum = currentData.payload.turnNum;
   const markList = currentData.payload.markList;
   const nowPlayer = currentData.payload.nowPlayer;
   const winner = currentData.payload.winner;
@@ -46,7 +48,6 @@ const App: React.FC = () => {
   `;
 
   useEffect(() => {
-    console.log('syokika');
     initGame();
   }, []);
 
@@ -59,8 +60,9 @@ const App: React.FC = () => {
       nowPlayer: 'X',
       winner: '',
     };
-    const initAction=createGameStateAction(initGameState);
+    const initAction = createGameStateAction(initGameState);
     store.dispatch(initAction);
+    setUpdata(update ? false : true);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -78,8 +80,8 @@ const App: React.FC = () => {
             if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
               if (markList[rowidx][idx] === '') {
                 const nextTurn = turnNum + 1;
-                currentGameState.turnNum=nextTurn;
-                currentGameState.nowPlayer = (nextTurn % 2 !== 0 ? 'X' : 'O');
+                currentGameState.turnNum = nextTurn;
+                currentGameState.nowPlayer = nextTurn % 2 !== 0 ? 'X' : 'O';
                 return nowPlayer;
               } else {
                 return mark;
@@ -95,13 +97,14 @@ const App: React.FC = () => {
       currentGameState.winner = winnerMark;
       const currentAction = createGameStateAction(currentGameState);
       store.dispatch(currentAction);
+      setUpdata(update ? false : true);
     }
   };
   return (
     <StyledBody>
       <StyledWinner>Winner:{winner}</StyledWinner>
       <StyledResetButton onClick={initGame}>Reset</StyledResetButton>
-      <Board playerMarkList={markList} setMark={handleClick}/>
+      <Board playerMarkList={markList} setMark={handleClick} />
     </StyledBody>
   );
 };
