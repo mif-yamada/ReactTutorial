@@ -1,4 +1,3 @@
-
 export const ActionTypes = {
   CURRENT_GAMESTATE: 'CURRENT_GAMESTATE' as const,
   UPDATE_TURN_NUM: 'UPDATE_TURN_NUM' as const,
@@ -7,7 +6,6 @@ export const ActionTypes = {
   UPDATE_WINNER: 'UPDATE_WINNER' as const,
 };
 
-// 複数Actionある時はUnion型？
 export type Actions =
   | 'CURRENT_GAMESTATE'
   | 'UPDATE_TURN_NUM'
@@ -22,7 +20,7 @@ export interface GameState {
   winner: string;
 }
 
-export interface ActionType{
+export interface ActionType {
   type: Actions;
   payload: GameState;
 }

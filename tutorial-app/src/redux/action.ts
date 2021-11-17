@@ -1,4 +1,3 @@
-// Action...ユーザーの入力から生成されるもの
 import { ActionTypes, ActionType, GameState } from './types';
 
 export const setCurrentGameStateAction = (state: GameState): ActionType => {
@@ -40,6 +39,6 @@ export const updateWinnerAction = (
 ): ActionType => {
   return {
     type: ActionTypes.UPDATE_WINNER,
-    payload: { ...state,winner: currentWinner },
+    payload: { ...state, winner: currentWinner },
   };
 };

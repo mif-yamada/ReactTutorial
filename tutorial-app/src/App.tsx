@@ -2,18 +2,19 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
-import { GameState } from './redux/types';
+import { Board } from './component/Board';
 import {
   setCurrentGameStateAction,
   updateMarkListAction,
   updateNowPlayerAction,
   updateTurnNumAction,
-  updateWinnerAction,
+  updateWinnerAction
 } from './redux/action';
-import { Board } from './component/Board';
+import { GameState } from './redux/types';
 import { judgementWinner } from './utils/gameState';
 
-const App: React.FC = () => {
+
+const App: React.FC = () =>{
   const currentData = useSelector<GameState, GameState>((state) => state);
   const turnNum = useSelector<GameState, number>((state) => state.turnNum);
   const markList = useSelector<GameState, string[][]>((state) => state.markList);
@@ -56,16 +57,6 @@ const App: React.FC = () => {
   useEffect(() => {
     initGame();
   }, []);
-
-  //   useEffect(() => {
-  // const currentData = useSelector<GameState, GameState>((state) => state);
-  // const turnNum = useSelector<GameState, number>((state) => state.turnNum);
-  // const markList = useSelector<GameState, string[][]>(
-  //   (state) => state.markList
-  // );
-  // const nowPlayer = useSelector<GameState, string>((state) => state.nowPlayer);
-  // const winner = useSelector<GameState, string>((state) => state.winner);
-  //   }, [useSelector]);
 
   const initGame = () => {
     const initGameState: GameState = {

@@ -28,7 +28,9 @@ const StyledSquare = styled.button`
 const Square: React.FC<SquareProps> = (props: SquareProps) => {
   const { squareIdx, playerMark, onClick } = props;
   return (
-    <StyledSquare data-idx={squareIdx} onClick={onClick}>{playerMark}</StyledSquare>
+    <StyledSquare data-idx={squareIdx} onClick={onClick}>
+      {playerMark}
+    </StyledSquare>
   );
 };
 

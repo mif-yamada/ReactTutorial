@@ -21,7 +21,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
   return (
     <StyledBoard>
       <tbody>
-        {playerMarkList.map((rowMarkList, idx) =>{
+        {playerMarkList.map((rowMarkList, idx) => {
           return (
             <tr key={`id=${shortid.generate()}`}>
               {rowMarkList.map((mark, i) => {
