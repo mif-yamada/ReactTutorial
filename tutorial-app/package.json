@@ -2,9 +2,28 @@
   "name": "tutorial-app",
   "version": "0.1.0",
   "private": true,
+  "jest": {
+    "verbose": true,
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/test/**/*.test.ts"
+    ]
+  },
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
+    "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -16,10 +35,12 @@
     "@types/shortid": "0.0.29",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
     "react-scripts": "4.0.3",
     "redux-persist": "^6.0.0",
     "require": "^2.4.20",
     "shortid": "^2.2.16",
+    "ts-jest": "26.0.0",
     "typescript": "^4.4.4",
     "web-vitals": "^1.1.2"
   },
@@ -27,6 +48,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "jest": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,5 +68,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "jest": "26.6.0"
   }
 }

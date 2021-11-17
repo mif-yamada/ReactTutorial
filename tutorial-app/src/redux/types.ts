@@ -1,18 +1,24 @@
-import { Action } from 'redux';
+export const ActionTypes = {
+  CURRENT_GAMESTATE: 'CURRENT_GAMESTATE' as const,
+  UPDATE_NEXT_GAME: 'UPDATE_NEXT_GAME' as const,
+  UPDATE_MARK_LIST: 'UPDATE_MARK_LIST' as const,
+  UPDATE_WINNER: 'UPDATE_WINNER' as const,
+};
 
-export const CURRENT_GAMESTATE = 'CURRENT_GAMESTATE';
+export type Actions =
+  | 'CURRENT_GAMESTATE'
+  | 'UPDATE_NEXT_GAME'
+  | 'UPDATE_MARK_LIST'
+  | 'UPDATE_WINNER';
 
-export type Actions ='CURRENT_GAMESTATE';
-export interface currentGameState extends Action {
-  type: 'CURRENT_GAMESTATE';
-}
-
-export interface Payload {
+export interface GameState {
   turnNum: number;
-  currentMap: string[][];
+  markList: string[][];
+  nowPlayer: string;
+  winner: string;
 }
 
 export interface ActionType {
   type: Actions;
-  payload: Payload;
+  payload: GameState;
 }

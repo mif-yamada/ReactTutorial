@@ -1,26 +1,42 @@
-// reducer...Actionから、新たなStateに書き換える
-import { ActionType } from './types';
+import { ActionType, ActionTypes, GameState } from './types';
 
-const initState: ActionType = {
-  type: 'CURRENT_GAMESTATE',
-  payload: {
-    turnNum: 1,
-    currentMap: Array(3)
-      .fill('')
-      .map(() => Array(3).fill('')),
-  },
+const initState: GameState = {
+  turnNum: 1,
+  markList: Array(3)
+    .fill('')
+    .map(() => Array(3).fill('')),
+  nowPlayer: 'X',
+  winner: '',
 };
 
-// TODO:state actionの型付け
-export const gameReducer = (state = initState, action: ActionType): ActionType => {
+export const gameReducer = (
+  state = initState,
+  action: ActionType
+): GameState => {
   switch (action.type) {
-    case 'CURRENT_GAMESTATE':
+    case ActionTypes.CURRENT_GAMESTATE:
       return {
-        type: action.type,
-        payload: {
-          turnNum: action.payload.turnNum,
-          currentMap: action.payload.currentMap,
-        },
+        ...state,
+        turnNum: action.payload.turnNum,
+        markList: action.payload.markList,
+        nowPlayer: action.payload.nowPlayer,
+        winner: action.payload.winner,
+      };
+    case ActionTypes.UPDATE_NEXT_GAME:
+      return {
+        ...state,
+        turnNum: action.payload.turnNum,
+        nowPlayer: action.payload.nowPlayer,
+      };
+    case ActionTypes.UPDATE_MARK_LIST:
+      return {
+        ...state,
+        markList: action.payload.markList,
+      };
+    case ActionTypes.UPDATE_WINNER:
+      return {
+        ...state,
+        winner: action.payload.winner,
       };
     default:
       return state;

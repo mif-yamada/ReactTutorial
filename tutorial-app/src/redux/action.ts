@@ -1,12 +1,36 @@
-// Action...ユーザーの入力から生成されるもの
-import { ActionType } from "./types";
+import { ActionTypes, ActionType, GameState } from './types';
 
-export const createGameStateAction = (state:ActionType):ActionType => {
+export const setCurrentGameStateAction = (state: GameState): ActionType => {
   return {
-    type: state.type,
-    payload: {
-      turnNum:state.payload.turnNum,
-      currentMap:state.payload.currentMap,
-    },
+    type: ActionTypes.CURRENT_GAMESTATE,
+    payload: state,
+  };
+};
+export const updateNextGameAction = (
+  state: GameState,
+    currentTurnNum: number,
+  currentNowPlayer: string
+): ActionType => {
+  return {
+    type: ActionTypes.UPDATE_NEXT_GAME,
+    payload: { ...state,  turnNum: currentTurnNum ,nowPlayer: currentNowPlayer },
+  };
+};
+export const updateMarkListAction = (
+  state: GameState,
+  markList: string[][]
+): ActionType => {
+  return {
+    type: ActionTypes.UPDATE_MARK_LIST,
+    payload: { ...state, markList: markList },
+  };
+};
+export const updateWinnerAction = (
+  state: GameState,
+  currentWinner: string
+): ActionType => {
+  return {
+    type: ActionTypes.UPDATE_WINNER,
+    payload: { ...state, winner: currentWinner },
   };
 };
