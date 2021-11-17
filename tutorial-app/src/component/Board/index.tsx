@@ -28,7 +28,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
                 return (
                   <td key={`id=${shortid.generate()}`}>
                     <Square
-                      squareIdx={idx * 3 + i}
+                      squareIdx={idx*3+i}
                       playerMark={playerMarkList[idx][i]}
                       onClick={setMark}
                     ></Square>

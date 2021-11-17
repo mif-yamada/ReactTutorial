@@ -22,20 +22,16 @@ export const gameReducer = (
         nowPlayer: action.payload.nowPlayer,
         winner: action.payload.winner,
       };
-    case ActionTypes.UPDATE_TURN_NUM:
+    case ActionTypes.UPDATE_NEXT_GAME:
       return {
         ...state,
         turnNum: action.payload.turnNum,
+        nowPlayer: action.payload.nowPlayer,
       };
     case ActionTypes.UPDATE_MARK_LIST:
       return {
         ...state,
         markList: action.payload.markList,
-      };
-    case ActionTypes.UPDATE_NOW_PLAYER:
-      return {
-        ...state,
-        nowPlayer: action.payload.nowPlayer,
       };
     case ActionTypes.UPDATE_WINNER:
       return {

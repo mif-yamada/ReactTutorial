@@ -6,13 +6,14 @@ export const setCurrentGameStateAction = (state: GameState): ActionType => {
     payload: state,
   };
 };
-export const updateTurnNumAction = (
+export const updateNextGameAction = (
   state: GameState,
-  currentTurnNum: number
+    currentTurnNum: number,
+  currentNowPlayer: string
 ): ActionType => {
   return {
-    type: ActionTypes.UPDATE_TURN_NUM,
-    payload: { ...state, turnNum: currentTurnNum },
+    type: ActionTypes.UPDATE_NEXT_GAME,
+    payload: { ...state,  turnNum: currentTurnNum ,nowPlayer: currentNowPlayer },
   };
 };
 export const updateMarkListAction = (
@@ -22,15 +23,6 @@ export const updateMarkListAction = (
   return {
     type: ActionTypes.UPDATE_MARK_LIST,
     payload: { ...state, markList: markList },
-  };
-};
-export const updateNowPlayerAction = (
-  state: GameState,
-  currentNowPlayer: string
-): ActionType => {
-  return {
-    type: ActionTypes.UPDATE_NOW_PLAYER,
-    payload: { ...state, nowPlayer: currentNowPlayer },
   };
 };
 export const updateWinnerAction = (

@@ -6,18 +6,18 @@ import { Board } from './component/Board';
 import {
   setCurrentGameStateAction,
   updateMarkListAction,
-  updateNowPlayerAction,
-  updateTurnNumAction,
-  updateWinnerAction
+  updateNextGameAction,
+  updateWinnerAction,
 } from './redux/action';
 import { GameState } from './redux/types';
 import { judgementWinner } from './utils/gameState';
 
-
-const App: React.FC = () =>{
+const App: React.FC = () => {
   const currentData = useSelector<GameState, GameState>((state) => state);
   const turnNum = useSelector<GameState, number>((state) => state.turnNum);
-  const markList = useSelector<GameState, string[][]>((state) => state.markList);
+  const markList = useSelector<GameState, string[][]>(
+    (state) => state.markList
+  );
   const nowPlayer = useSelector<GameState, string>((state) => state.nowPlayer);
   const winner = useSelector<GameState, string>((state) => state.winner);
 
@@ -73,16 +73,17 @@ const App: React.FC = () =>{
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (winner === '' && turnNum < 10) {
-      const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
+      const clickIdx = Number(e.currentTarget.id);
       const checkMapBlank = () => {
         return markList.map((row, rowidx) =>
           row.map((mark, idx) => {
             if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
               if (markList[rowidx][idx] === '') {
                 const nextTurn = turnNum + 1;
-                dispatch(updateTurnNumAction(currentData, nextTurn));
                 const nextPlayer = nextTurn % 2 !== 0 ? 'X' : 'O';
-                dispatch(updateNowPlayerAction(currentData, nextPlayer));
+                dispatch(
+                  updateNextGameAction(currentData, nextTurn, nextPlayer)
+                );
                 return nowPlayer;
               } else {
                 return mark;
