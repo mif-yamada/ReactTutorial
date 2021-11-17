@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { GameState } from './redux/types';
+import {
+  setCurrentGameStateAction,
+  updateMarkListAction,
+  updateNowPlayerAction,
+  updateTurnNumAction,
+  updateWinnerAction,
+} from './redux/action';
 import { Board } from './component/Board';
 import { judgementWinner } from './utils/gameState';
-import { createGameStateAction } from './redux/action';
-import { store } from './redux/store';
 
 const App: React.FC = () => {
-  // レンダリング用データ
-  const [update, setUpdata] = useState<boolean>(false);
+  const currentData = useSelector<GameState, GameState>((state) => state);
+  const turnNum = useSelector<GameState, number>((state) => state.turnNum);
+  const markList = useSelector<GameState, string[][]>((state) => state.markList);
+  const nowPlayer = useSelector<GameState, string>((state) => state.nowPlayer);
+  const winner = useSelector<GameState, string>((state) => state.winner);
 
-  const currentData = store.getState();
-  const turnNum = currentData.payload.turnNum;
-  const markList = currentData.payload.markList;
-  const nowPlayer = currentData.payload.nowPlayer;
-  const winner = currentData.payload.winner;
+  const dispatch = useDispatch();
+
   const StyledBody = styled.div`
     text-align: center;
   `;
@@ -51,6 +57,16 @@ const App: React.FC = () => {
     initGame();
   }, []);
 
+  //   useEffect(() => {
+  // const currentData = useSelector<GameState, GameState>((state) => state);
+  // const turnNum = useSelector<GameState, number>((state) => state.turnNum);
+  // const markList = useSelector<GameState, string[][]>(
+  //   (state) => state.markList
+  // );
+  // const nowPlayer = useSelector<GameState, string>((state) => state.nowPlayer);
+  // const winner = useSelector<GameState, string>((state) => state.winner);
+  //   }, [useSelector]);
+
   const initGame = () => {
     const initGameState: GameState = {
       turnNum: 1,
@@ -60,28 +76,22 @@ const App: React.FC = () => {
       nowPlayer: 'X',
       winner: '',
     };
-    const initAction = createGameStateAction(initGameState);
-    store.dispatch(initAction);
-    setUpdata(update ? false : true);
+    const initAction = setCurrentGameStateAction(initGameState);
+    dispatch(initAction);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     if (winner === '' && turnNum < 10) {
       const clickIdx = Number(e.currentTarget.getAttribute('data-idx'));
-      const currentGameState: GameState = {
-        turnNum: turnNum,
-        markList: markList,
-        nowPlayer: nowPlayer,
-        winner: winner,
-      };
       const checkMapBlank = () => {
         return markList.map((row, rowidx) =>
           row.map((mark, idx) => {
             if (rowidx === Math.floor(clickIdx / 3) && idx === clickIdx % 3) {
               if (markList[rowidx][idx] === '') {
                 const nextTurn = turnNum + 1;
-                currentGameState.turnNum = nextTurn;
-                currentGameState.nowPlayer = nextTurn % 2 !== 0 ? 'X' : 'O';
+                dispatch(updateTurnNumAction(currentData, nextTurn));
+                const nextPlayer = nextTurn % 2 !== 0 ? 'X' : 'O';
+                dispatch(updateNowPlayerAction(currentData, nextPlayer));
                 return nowPlayer;
               } else {
                 return mark;
@@ -92,14 +102,12 @@ const App: React.FC = () => {
         );
       };
       const currentMap = checkMapBlank();
-      currentGameState.markList = currentMap;
+      dispatch(updateMarkListAction(currentData, currentMap));
       const winnerMark = judgementWinner(currentMap);
-      currentGameState.winner = winnerMark;
-      const currentAction = createGameStateAction(currentGameState);
-      store.dispatch(currentAction);
-      setUpdata(update ? false : true);
+      dispatch(updateWinnerAction(currentData, winnerMark));
     }
   };
+
   return (
     <StyledBody>
       <StyledWinner>Winner:{winner}</StyledWinner>
